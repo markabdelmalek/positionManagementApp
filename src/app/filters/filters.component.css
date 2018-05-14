@@ -1,0 +1,10 @@
+ .requirementsFilter {
+ }
+
+ .detailDelete {
+ 	margin-top: 10px;
+ }
+
+ .clickableLink {
+ 	text-decoration: underline; cursor: pointer;
+ }

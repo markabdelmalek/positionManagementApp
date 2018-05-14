@@ -1,0 +1,12 @@
+ .inTheMiddle {
+ 	margin: 0 auto;
+ }
+
+ .inTheMiddle .addBtn {
+ 	width: 150px;
+ }
+
+ .ui-fluid .ui-inputtext[size] {
+ 	width: auto;
+ }
+

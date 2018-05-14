@@ -1,0 +1,20 @@
+<div *ngIf="showMe">
+	<p-dialog class="requirementsFilter" header="Qualifications Filters" visible="true" (onHide)="hideModal()" [responsive]="true" showEffect="fade" [modal]="true">
+		<p-accordion (onOpen)="onTabOpen($event)">
+			<button type="button" pButton icon="fas fa-plus-square" (click)="addCategory()" label="Add Category"></button>
+			<input pInputText id="newCategory" [(style.visibility)]="newCategoryVisible" [(ngModel)]="newCategoryText"/>
+			<button type="button" pButton icon="fas fa-check-circle" (click)="saveCategory($event)" [(style.visibility)]="newCategoryVisible"></button>
+			<p-accordionTab *ngFor="let category of currentFilters" header="{{category.name}}">
+				<button type="button" pButton icon="fas fa-plus-square" (click)="addDetail()" label="Add Detail"></button>
+				<input pInputText id="newDetail" [(style.visibility)]="newDetailVisible" [(ngModel)]="newDetailText"/>
+				<button type="button" pButton icon="fas fa-check-circle" (click)="saveDetail($event)" [(style.visibility)]="newDetailVisible"></button>
+				<div *ngFor="let detail of category.details" (click)="modifyCategoryDetailText(category, detail)">
+					<button class="detailDelete" type="button" pButton icon="fas fa-times-circle" (click)="deleteDetail(category,detail)"></button>
+					<span class="clickableLink">{{detail}}</span>
+					<input pInputText id="replacementText_{{category.name}}_{{detail}}" style="visibility:hidden;" [(ngModel)]="replacementText" placeholder="Replace With ..." />
+					<button type="button" id="replacementTextSubmitBtn_{{category.name}}_{{detail}}" pButton icon="fas fa-check-circle" (click)="saveReplacement(category, detail)" style="visibility:hidden;"></button>
+				</div>
+			</p-accordionTab>
+		</p-accordion>
+	</p-dialog>
+</div>

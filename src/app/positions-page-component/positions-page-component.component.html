@@ -1,0 +1,90 @@
+<h1 align="center">Open Positions Management Page</h1>
+<p-toolbar>
+	<div class="inTheMiddle ui-toolbar-group-left">
+	    <button type="button" class="filterBtn" pButton icon="fas fa-filter" (click)="showFiltersDialog()" label="Qualifications Management"></button>
+	</div>
+	<div class="inTheMiddle ui-toolbar-group-right">
+	    <button type="button" class="addBtn" pButton icon="fa-plus" (click)="showDialogToAdd()" label="Add Position"></button>
+	</div>
+</p-toolbar>
+<div class="inTheMiddle">
+    <p-table #tt [columns]="cols" class="positionsTable" [value]="currentPositions" selectionMode="single" [(selection)]="selectedPosition" (onRowSelect)="onPositionSelect($event)" [paginator]="true" [rows]="10">
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngFor="let col of columns">
+                    {{col.header}}
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-currentPositions let-columns="columns">
+            <tr [pSelectableRow]="currentPositions">
+                <td *ngFor="let col of columns">
+                	{{currentPositions[col.field]}}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+
+    <p-dialog header="Position Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true" width="600">
+    <div class="ui-g ui-fluid" *ngIf="position">
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <label for="vin">Title</label>
+            </div>
+            <div class="ui-g-6">
+                <input pInputText id="title" [(ngModel)]="position.title" />
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <label for="year">Start Date</label>
+            </div>
+            <div class="ui-g-6">
+                <p-calendar id="startDate" [(ngModel)]="position.startDate"></p-calendar>
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <label for="brand">End Date</label>
+            </div>
+            <div class="ui-g-6">
+                <p-calendar id="endDate" [(ngModel)]="position.endDate"></p-calendar>
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <label for="color">Qualifications</label>
+            </div>
+            <div class="ui-g-6">
+                <button type="button" pButton icon="fas fa-list-alt" (click)="pickRequirements(position)"></button>
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <div class="ui-g-6">
+                <label for="color">Location</label>
+            </div>
+            <div class="ui-g-6">
+                <input pInputText id="location" [(ngModel)]="position.location" />
+            </div>
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="deletePosition()" label="Delete"></button>
+            <button type="button" pButton icon="fa-check" (click)="savePosition()" label="Save"></button>
+        </div>
+    </p-footer>
+	</p-dialog>
+	
+	<p-dialog [modal]="true" [(visible)]="showAddRequirements">
+		<p-pickList [source]="formatedFilters" [target]="position.requirements">
+		    <ng-template let-req pTemplate="item">
+		    	<div class="ui-helper-clearfix">
+		            <div style="font-size:14px;float:right;margin:15px 5px 0 0">{{req}}</div>
+		        </div>
+		    </ng-template>
+		</p-pickList>
+	</p-dialog>
+	
+	<app-filters [showMe]="filtersDialog" (filtersChange)="updateFilters($event)" (visibilityChange)="hideFilters()" (deleteDetails)="updatePostings($event)"></app-filters>
+</div>
