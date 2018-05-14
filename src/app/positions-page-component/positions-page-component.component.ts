@@ -31,7 +31,7 @@ export class PositionsPageComponentComponent implements OnInit {
     	this.filtersDialog = false;
     	this.showAddRequirements = false;
     	this.displayDialog = false;
-    	this.position = {name: '', requirements:[]};
+    	this.position = {title: '', startDate: new Date(), endDate: new Date(), requirements:[], location:''};
     }
 
     hideFilters(){
@@ -48,8 +48,6 @@ export class PositionsPageComponentComponent implements OnInit {
     }
 
     updateFilters(event){
-    	console.log("New Filters");
-    	console.log(event);
     	this.currentFilters = this.service.getFilters();
     	this.formatFilters();
     	//this.currentFilters = event;
@@ -62,7 +60,6 @@ export class PositionsPageComponentComponent implements OnInit {
     }
 
     showFiltersDialog() {
-    	console.log("Show Filters Window");
     	this.filtersDialog = true;
     }
 
@@ -73,12 +70,10 @@ export class PositionsPageComponentComponent implements OnInit {
     }
 
     updatePostings(event) {
-    	console.log(event);
     	for (var i = 0; i < this.currentPositions.length- 1; i++) {
     		for (var j=0; j < this.currentPositions[i].requirements.length; j++) {
-    			console.log(this.currentPositions[i].requirements[j]);
     			if (this.currentPositions[i].requirements[j] == event){
-    				this.currentPositions[i].requirements = this.currentPositions[i].requirements.splice(j,1);
+    				this.currentPositions[i].requirements = this.currentPositions[i].requirements.filter((val,x) => x != j);
 				}
     		}
     	}
