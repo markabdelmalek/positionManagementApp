@@ -8,13 +8,19 @@
 	</div>
 </p-toolbar>
 <div class="inTheMiddle">
-    <p-table #tt [columns]="cols" class="positionsTable" [value]="currentPositions" selectionMode="single" [(selection)]="selectedPosition" (onRowSelect)="onPositionSelect($event)" [paginator]="true" [rows]="10">
+    <p-table #dt [columns]="cols" class="positionsTable" [value]="currentPositions" selectionMode="single" [(selection)]="selectedPosition" (onRowSelect)="onPositionSelect($event)" [paginator]="true" [rows]="10" sortMode="single">
         <ng-template pTemplate="header" let-columns>
             <tr>
-                <th *ngFor="let col of columns">
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                     {{col.header}}
+                   	<p-sortIcon [field]="col.field"></p-sortIcon>
                 </th>
             </tr>
+            <tr>
+            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                <input *ngSwitchCase="'title'" pInputText type="text" placeholder="Search For..." (input)="dt.filter($event.target.value, col.field, 'contains')">
+            </th>
+        </tr>
         </ng-template>
         <ng-template pTemplate="body" let-currentPositions let-columns="columns">
             <tr [pSelectableRow]="currentPositions">
@@ -40,7 +46,7 @@
                 <label for="year">Start Date</label>
             </div>
             <div class="ui-g-6">
-                <p-calendar id="startDate" [(ngModel)]="position.startDate"></p-calendar>
+                <p-calendar id="startDate" dateFormat="dd/mm/yy" [(ngModel)]="position.startDate"></p-calendar>
             </div>
         </div>
         <div class="ui-g-12">
@@ -48,7 +54,7 @@
                 <label for="brand">End Date</label>
             </div>
             <div class="ui-g-6">
-                <p-calendar id="endDate" [(ngModel)]="position.endDate"></p-calendar>
+                <p-calendar id="endDate" dateFormat="dd/mm/yy" [(ngModel)]="position.endDate"></p-calendar>
             </div>
         </div>
         <div class="ui-g-12">
